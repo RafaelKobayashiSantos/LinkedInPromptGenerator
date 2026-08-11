@@ -1,4 +1,5 @@
 from playwright.async_api import async_playwright
+import re
 
 async def get_job_description(url):
 
@@ -8,10 +9,16 @@ async def get_job_description(url):
             headless=True
         )
 
+        # Validate the URL format and extract the job ID if it's a search results URL
+        if "/jobs/search-results/?currentJobId" in url:
+    
+            job_id = re.search(r"currentJobId=(\d+)", url)
+            job_url = f"https://www.linkedin.com/jobs/view/{job_id.group(1)}/"
+
         page = await browser.new_page()
 
         await page.goto(
-            url,
+            job_url if 'job_url' in locals() else url, #In case the job_url variable is defined, use it; otherwise, use the original URL
             wait_until="domcontentloaded"
         )
 

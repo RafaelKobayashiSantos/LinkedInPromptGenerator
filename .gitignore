@@ -6,3 +6,5 @@ outputs/*
 .ipynb_checkpoints/
 main.py
 main_colab.ipynb
+inputs/*.pdf
+inputs/*.docx
