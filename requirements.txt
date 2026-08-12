@@ -1,3 +1,5 @@
 pdfplumber
 re
 playwright
+datetime
+pathlib

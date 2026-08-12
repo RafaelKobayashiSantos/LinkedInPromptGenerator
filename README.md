@@ -1,22 +1,34 @@
 # LinkedInPromptGenerator
 
-LinkedInPromptGenerator is a prompt file generator that creates structured AI prompts from job listing data. It helps users prepare prompt content for their preferred AI platform to analyze job details, compare opportunities, and make data-driven career decisions. The project is already capable of parsing job details, scoring opportunities, and generating structured comparisons.
+LinkedIn Prompt Generator is a Python tool that transforms a candidate's resume and a LinkedIn job posting into structured AI prompts.
 
-## Progress So Far
+The project was created to automate part of the job application workflow, allowing users to analyze how well their resume matches a specific position and generate different types of career-related outputs.
 
-- Core parsing engine implemented in `main.py`.
-- Job posting data ingestion and normalization completed.
-- Basic comparison logic for salary, benefits, and role fit added.
-- Local data storage with `data/` folder for input and output.
-- Initial scoring system for evaluating job offers.
-- Documentation and repository structure established.
+Instead of directly connecting to an LLM API, the project generates ready-to-use Markdown prompts that can be submitted to the user's preferred AI platform.
+
+## What It Does
+
+The current workflow is:
+
+1. Upload or provide a resume in PDF format.
+2. Extract the resume text automatically.
+3. Provide a LinkedIn job posting URL.
+4. Extract the job description using Playwright.
+5. Select the type of analysis or output to generate.
+6. Combine the resume, job description and selected task into a structured prompt.
+7. Save the resulting prompt as a Markdown file.
+
 
 ## Technology Stack
 
-- 🐍 Python – main language for data parsing and analysis.
-- 📄 Markdown – documentation and README.
-- 📁 Local file system – input/output data handling.
-- 🧠 Custom logic – scoring and comparison rules.
+## Technology Stack
+
+- 🐍 Python
+- 📄 PDF Parsing
+- 🎭 Playwright
+- 📝 Markdown
+- ☁️ Google Colab
+- 🐙 Git & GitHub
 
 ### Stack Details
 
@@ -41,13 +53,25 @@ LinkedInPromptGenerator is a prompt file generator that creates structured AI pr
 - Enable weighting of criteria by user preference.
 - Provide export options: CSV, JSON, or PDF.
 
-## Future Implementations
+## Privacy & Data Handling
 
-- 🔍 Natural language processing for job description analysis.
-- 📊 Visual charts for salary trends and offer comparisons.
-- 🌐 Web interface or notebook integration for interactive use.
-- ⚙️ Automated LinkedIn job scraping pipeline.
-- 📈 Advanced scoring with career growth and total compensation.
+This project is designed to process resumes temporarily within the Google Colab runtime.
+
+**Your resume and generated files are not stored by this project or sent to an external LLM API.**
+
+The notebook uploads the resume to the temporary Colab runtime so it can be processed during the current session. The project does not include a database, persistent storage, or an API that collects uploaded resumes.
+
+Google Colab runs code inside a virtual machine, and Google states that these virtual machines are deleted after periods of inactivity and have a maximum lifetime. Files stored in the runtime are therefore not intended to be used as permanent storage.
+
+> **Important:** If you want to keep your generated prompt or any processed file, download it before ending your Colab session.
+
+For more information, see Google's official [Colab FAQ](https://research.google.com/colaboratory/faq.html).
+
+### Personal Data
+
+Resumes may contain personal and professional information. Only upload documents you are comfortable processing through Google Colab.
+
+This project *does not* require an LLM API key and does not intentionally transmit resume contents to an external AI service.
 
 ## Visualization
 
@@ -60,45 +84,134 @@ Current status:
 - [ ] NLP-based analysis
 - [ ] Web or notebook UI
 
-Simple progress chart:
+
+## Installation
+
+git clone https://github.com/RafaelKobayashiSantos/LinkedInPromptGenerator.git
+cd LinkedInPromptGenerator
+
+### Install the dependencies:
 
 ```
-Progress: [#####-----] 50%
-Features implemented: 4 / 8
+- pip install -r requirements.txt
+```
+
+Install the Playwright browser:
+
+```
+- playwright install chromium
 ```
 
 ## Usage
 
-1. Open the repository in your code editor.
-2. Place job listings or example data in `data/`.
-3. Run:
+python main.py
 
-   ```bash
-   python main.py
-   ```
+The program will guide the user through the available tasks and generate the corresponding Markdown prompt.
 
-4. Check the generated prompt files and review the output.
+The generated prompt contains:
 
-## Google Colab
+- Candidate resume
+- Job description
+- Selected task instructions
+- System instructions for the AI
 
-The project is also available as a running notebook on Google Colab:
-
-https://colab.research.google.com/drive/1UlaQAyUWqKXhPj3vIglX0ecv7_rC0skq#scrollTo=RLkJkxuVDZ3s
-
-Step-by-step guide:
-
-1. Open the Colab link in your browser.
-2. If needed, sign in with your Google account.
-3. Click `Open in Playground` or `Copy to Drive` to create your own editable notebook.
-4. Review the notebook cells to see how the repository is loaded and executed.
-5. Run the cells in order using the play button or `Runtime > Run all`.
-6. Upload or link your job listing data if prompted by the notebook.
-7. View the generated file and export any results from the notebook, the file will be downloaded once the process is finished.
+The tool does not send the prompt to an LLM automatically.
 
 ## Project Structure
 
-- `README.md` - Current project documentation
-- `main.py` - Main analyzer script
-- `requirements.txt` - Dependencies list
-- `data/` - Job listings, input, and output storage
-- `src/` - Analyzer implementation modules
+LinkedInPromptGenerator/
+│
+├── inputs/
+│   └── resume.pdf
+│
+├── outputs/
+│   └── generated prompts
+│
+├── parsers/
+│   └── pdf_parser.py
+│
+├── tasks/
+│   ├── career_report.md
+│   ├── cover_letter.md
+│   ├── gap_analysis.md
+│   ├── interview.md
+│   └── recruiter.md
+│
+├── main.py
+├── main_colab.ipynb
+├── job_overview.py
+├── prompt_generator.py
+├── task_reader.py
+├── requirements.txt
+└── README.md
+
+## Google Colab
+
+The project can also be executed through Google Colab. [By clicking right here!](https://colab.research.google.com/drive/1UlaQAyUWqKXhPj3vIglX0ecv7_rC0skq#scrollTo=s8GQ78ZPVpxE)
+
+Open the project in Google Colab
+
+The notebook allows users to:
+
+- Clone the repository.
+- Install the required dependencies.
+- Upload their resume.
+- Provide a LinkedIn job posting.
+- Select a task.
+- Generate the corresponding Markdown prompt.
+
+#### Why Generate Prompts Instead of Calling an LLM?
+
+The project intentionally separates prompt generation from AI execution.
+
+This makes the tool:
+
+1. Model independent
+2. Compatible with different AI platforms
+3. Easy to customize
+4. Free from API key requirements
+5. Easier to inspect and modify
+
+The user remains in control of which AI model receives their resume and job information.
+
+## Design Decisions
+Task-based architecture
+
+Each output type is represented by a separate Markdown file.
+
+This allows new workflows to be added without modifying the core Python logic.
+
+For example, adding:
+
+```
+tasks/linkedin_about.md
+```
+
+automatically makes a new task available to the task selector.
+
+Separation of responsibilities
+
+The project separates:
+
+Resume parsing
+Job description extraction
+Task selection
+Prompt generation
+
+This keeps each component simple and easier to maintain.
+
+## Future Improvements
+
+Possible future improvements include:
+
+- Better PDF structure preservation
+- Support for additional job platforms
+- Resume formatting analysis
+- More career-oriented task templates
+- Optional direct LLM integration
+   Web interface
+- Automated application tracking
+
+## License
+
+This project is intended as a personal portfolio and learning project.
