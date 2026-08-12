@@ -2,17 +2,21 @@ from parsers.pdf_parser import ResumeParser
 from prompt_generator import PromptGenerator
 from job_overview import get_job_description
 from task_reader import get_task_name as task_reader
+from pathlib import Path
+from datetime import datetime
 import asyncio
 
 
+timestamp = datetime.now().strftime("%m-%d %H:%M")
+
 # ===========================
-# CURRÍCULO
+# RESUME
 # ===========================
 
 resume = ResumeParser("inputs/resume.pdf").extract_text()
 
 # ===========================
-# VAGA
+# JOB DESCRIPTION
 # ===========================
 
 job = asyncio.run(
@@ -22,7 +26,7 @@ job = asyncio.run(
 )
 
 # ===========================
-# Task selection
+# TASK SELECTION
 # ===========================
 
 TASK = task_reader()  # Name of the task file (without extension) in tasks/
@@ -30,18 +34,21 @@ TASK = task_reader()  # Name of the task file (without extension) in tasks/
 if TASK is None:
     exit()
 
-with open(f"tasks/{TASK}.md", encoding="utf8") as f:
-    task = f.read()
+task_path = Path("tasks") / f"{TASK}.md"
+
+task = task_path.read_text(encoding="utf-8")
 
 # ===========================
-# Generate the prompt and save it to a file
+# GENERATE PROMPT
 # ===========================
 
 generator = PromptGenerator(resume, job)
 
+result_name = f"outputs/{TASK}{timestamp}.md"
+
 generator.save(
     task=task,
-    output_path=f"outputs/{TASK}.md"
+    output_path=result_name
 )
 
-print(f"Prompt '{TASK}' gerado com sucesso!")
+print(f"Prompt '{result_name}' gerado com sucesso!")

@@ -1,9 +1,13 @@
 from pathlib import Path
 
+# =======================================
+# Module responsible for reading and selecting 
+# tasks from the 'tasks' directory.
+# =======================================
+
 def get_task_name():
     # Specify the directory path
     folder_path = Path("./tasks")
-
 
     # List only files (excluding subfolders)
     file_names = sorted(

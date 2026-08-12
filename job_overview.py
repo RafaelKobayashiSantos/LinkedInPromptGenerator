@@ -1,6 +1,16 @@
 from playwright.async_api import async_playwright
 import re
 
+# =========================================
+# Module responsible for scraping job 
+# descriptions from LinkedIn job postings.
+# =========================================
+
+# Asynchronously fetch the job description 
+# from a LinkedIn job posting URL. If the URL 
+# is a search results page, extract the job ID 
+# and navigate to the specific job posting.
+
 async def get_job_description(url):
 
     async with async_playwright() as p:
@@ -37,20 +47,22 @@ async def get_job_description(url):
                 description_selector,
                 timeout=10000
             )
-        
+
+        # Handle the case where the job description is not found within the timeout period
         except Exception as e:
-            #print(f"Error: {e}")
             await browser.close()
             print("""❌⁴⁰⁴ Error ⁴⁰⁴:
             Job description not found, 
             please check the URL or the page structure.
             """)  
             raise SystemExit()
-            
-        descricao = await page.locator(
+
+        # Extract the job description text from the 
+        # page using the specified selector           
+        description = await page.locator(
             description_selector
         ).first.inner_text()
 
         await browser.close()
 
-        return descricao
+        return description
