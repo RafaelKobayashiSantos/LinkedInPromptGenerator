@@ -29,7 +29,7 @@ def get_task_name():
         print('')
         print("="*50)
 
-        task_index = input("Type the index of the task you want to generate (or type 'quit' to exit): ")
+        task_index = input("Type the index of the task you want to generate \n(or type 'quit' to exit): \n")
         print('')
         # Check if the user wants to quit
         if task_index.lower() == "quit":
